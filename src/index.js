@@ -119,7 +119,7 @@ app.post('/api/createAccount', async (req, res) => {
 });
 
 //get package info
-app.get('/api/getPackage', async (req, res) => {
+app.get('/api/getPackageInfo', async (req, res) => {
     //check if no files were uploaded
     if (!req.query.title) {
         return res.status(400).send('No title provided.');
