@@ -54,7 +54,7 @@ app.post('/api/upload', async (req, res) => {
     }
     const token = req.body.token;
     const username = req.body.username;
-    const user = await db.get(username);
+    const user = await db.getKey(username);
     if (!user || user !== token) {
         return res.status(401).send('Invalid token.');
     }
