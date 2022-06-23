@@ -5,14 +5,13 @@
 Request: `POST /api/upload`
 Body (multipart/form-data):
 
--- * data: Type: file,
+-- data: Type: file, *
 
--- * token: Type: string,
+-- token: Type: string, *
 
--- * title: Type: string
+-- title: Type: string *
 
 What to provide:
-
     * token: Your account token
     * data: Your package files
     * title: Your package title
