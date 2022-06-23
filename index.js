@@ -24,7 +24,7 @@ app.use(express.urlencoded({extended: true}));
 
 //set up db
 const settings = {
-    dbFile: './public/db/db.txt',
+    dbFile: '.db/db.txt',
     allowOverwrite: false,
     delimiter: '|',
     enableCache: true
