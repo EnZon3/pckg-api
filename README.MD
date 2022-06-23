@@ -17,7 +17,7 @@ node .
 
 ## API documentation (In the works)
 
- [Upload a package](docs/upload) `POST /api/upload`
+ [Upload a package](docs/upload.md) `POST /api/upload`
 
 
 #### Headers
