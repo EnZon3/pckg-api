@@ -140,3 +140,29 @@ app.get('/api/getPackageInfo', async (req, res) => {
     //send package info
     res.send(packageInfo);
 });
+
+//search for packages given a search term
+app.get('/api/search', async (req, res) => {
+    //check if no files were uploaded
+    if (!req.query.searchTerm) {
+        return res.status(400).send('No search term provided.');
+    }
+
+    //get all files in the uploads directory
+    let files;
+    try {
+        files = await fs.promises.readdir('./public/uploads/');
+    }
+    catch (err) {
+        return res.status(404).send('No packages found.');
+    }
+
+    //filter files by search term
+    let searchResults = _.filter(files, (file) => {
+        return file.includes(req.query.searchTerm);
+    }
+    );
+
+    //send search results
+    res.send(searchResults);
+});
