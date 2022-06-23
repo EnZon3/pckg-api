@@ -83,7 +83,7 @@ app.get('/api/login', async (req, res) => {
     //check if username exists
     let user = await db.getKey(`${username}`);
     if (!user) {
-        return res.status(400).send('Username does not exist.');
+        return res.status(400).send('Account does not exist.');
     }
 
     //create token from username and password
