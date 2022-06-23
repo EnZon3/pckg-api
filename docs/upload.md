@@ -6,7 +6,9 @@ Request: `POST /api/upload`
 Body (multipart/form-data):
 
 -- * data: Type: file,
+
 -- * token: Type: string,
+
 -- * title: Type: string
 
 What to provide:
