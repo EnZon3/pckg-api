@@ -15,10 +15,10 @@ Run:
 node .
 ```
 
-### API documentation (In the works)
+## API documentation (In the works)
 
-> api/upload
-Body (multipart/formdata):
+ [Upload a package](docs/upload) `POST /api/upload`
+
 
 #### Headers
 

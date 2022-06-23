@@ -1,5 +1,5 @@
-# ignore node modules and public/uploads
-
-./node_modules/
-./public/uploads/
-./.vscode/
+node_modules
+build
+npm-debug.log
+.env
+.DS_Store
