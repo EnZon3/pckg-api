@@ -1,0 +1,5 @@
+# ignore node modules and public/uploads
+
+./node_modules/
+./public/uploads/
+./.vscode/
