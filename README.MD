@@ -7,7 +7,7 @@ pckg is a package manager for the language [SPWN](https://github.com/Spu7Nix/SPW
 
 Clone the repository:
 ```bash
-git clone github.com/EnZon3/pckg
+git clone github.com/EnZon3/pckg-api
 ```
 
 Run:

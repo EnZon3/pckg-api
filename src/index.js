@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 });
 
 //upload multiple files, each going to its own folder inside public/uploads
-app.post('/api/upload', /*upload.array('data'),*/ async (req, res) => {
+app.post('/api/upload', async (req, res) => {
     //check if no files were uploaded
     if (!req.files) {
         return res.status(400).send('No files were provided.');
