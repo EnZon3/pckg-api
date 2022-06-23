@@ -10,6 +10,8 @@ Body (multipart/form-data):
 
 -- token: Type: string, *
 
+-- username: Type: string, *
+
 -- title: Type: string *
 
 What to provide:

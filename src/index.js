@@ -48,6 +48,17 @@ app.post('/api/upload', async (req, res) => {
         return res.status(400).send('No files were provided.');
     }
 
+    //check token
+    if (!req.body.token) {
+        return res.status(401).send('No token provided.');
+    }
+    const token = req.body.token;
+    const username = req.body.username;
+    const user = await db.get(username);
+    if (!user || user !== token) {
+        return res.status(401).send('Invalid token.');
+    }
+
     //get multiple files
     //loop all files
     _.forEach(_.keysIn(req.files.data), (key) => {
