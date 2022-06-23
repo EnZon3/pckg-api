@@ -126,8 +126,9 @@ app.get('/api/getPackageInfo', async (req, res) => {
     }
 
     //get package info using fs in the uploads directory
+    let packageInfo;
     try {
-        let packageInfo = await fs.promises.readFile(`./public/uploads/${req.query.title}/pckg.json`, 'utf8');
+        packageInfo = await fs.promises.readFile(`./public/uploads/${req.query.title}/pckg.json`, 'utf8');
     }
     catch (err) {
         return res.status(404).send('Package not found');
