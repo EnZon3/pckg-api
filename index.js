@@ -24,7 +24,7 @@ app.use(express.urlencoded({extended: true}));
 
 //set up db
 const settings = {
-    dbFile: '.db/db.txt',
+    dbFile: './db/db.txt',
     allowOverwrite: false,
     delimiter: '|',
     enableCache: true
@@ -126,7 +126,12 @@ app.get('/api/getPackageInfo', async (req, res) => {
     }
 
     //get package info using fs in the uploads directory
-    let packageInfo = await fs.promises.readFile(`./public/uploads/${req.query.title}/pckg.json`, 'utf8');
+    try {
+        let packageInfo = await fs.promises.readFile(`./public/uploads/${req.query.title}/pckg.json`, 'utf8');
+    }
+    catch (err) {
+        return res.status(404).send('Package not found');
+    }
 
     //parse package info
     packageInfo = JSON.parse(packageInfo);
