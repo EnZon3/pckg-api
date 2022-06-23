@@ -3,6 +3,7 @@
 '*' means required
 
 Request: `POST /api/upload`
+
 Body (multipart/form-data):
 
 -- data: Type: file, *
