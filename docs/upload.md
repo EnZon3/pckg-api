@@ -19,3 +19,5 @@ What to provide:
     * data: Your package files
     * title: Your package title
 
+Returns:
+    type: string: `Package uploaded!`

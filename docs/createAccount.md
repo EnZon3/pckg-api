@@ -1,8 +1,8 @@
-# Log In
+# Create account
 
 '*' means required
 
-Request: `GET /api/login`
+Request: `POST /api/createAccount`
 
 Body (multipart/form-data):
 
@@ -14,6 +14,5 @@ What to provide:
     * username: Your account username
     * password: Your account password
 
-
 Returns:
-    type string: Your account token
+    type: string: `Account created!`
