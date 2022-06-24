@@ -17,7 +17,6 @@ app.listen(8080, () => {
 
 //middleware
 app.use(express.static('public/'));
-app.use(express.static('db/'));
 app.use(cors());
 //static files unrelated to html
 app.use(express.static('public/uploads'));
@@ -26,7 +25,7 @@ app.use(express.urlencoded({extended: true}));
 
 //set up db
 const settings = {
-    dbFile: `db/${process.env.DB_FL}/db.txt`,
+    dbFile: `db/db.txt`,
     allowOverwrite: false,
     delimiter: '|',
     enableCache: true
