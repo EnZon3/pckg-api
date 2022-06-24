@@ -11,7 +11,7 @@ require('dotenv').config();
 
 //listen on port 8080
 app.listen(8080, () => {
-    console.log('listening on port 8080');
+  console.log('listening on port 8080');
 });
 
 
@@ -22,149 +22,149 @@ app.use(cors());
 //static files unrelated to html
 app.use(express.static('public/uploads'));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 //set up db
 const settings = {
-    dbFile: `db/${process.env.DB_FL}/db.txt`,
-    allowOverwrite: false,
-    delimiter: '|',
-    enableCache: true
+  dbFile: `db/${process.env.DB_FL}/db.txt`,
+  allowOverwrite: false,
+  delimiter: '|',
+  enableCache: true
 };
 db.setup(settings);
 
 app.use(fileUpload({
-    createParentPath: true
+  createParentPath: true
 }));
 
 
 //routes
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/html/index.html');
+  res.sendFile(__dirname + '/public/html/index.html');
 });
 
 //upload multiple files, each going to its own folder inside public/uploads
 app.post('/api/upload', async (req, res) => {
-    //check if no files were uploaded
-    if (!req.files) {
-        return res.status(400).send('No files were provided.');
-    }
+  //check if no files were uploaded
+  if (!req.files) {
+    return res.status(400).send('No files were provided.');
+  }
 
-    //check token
-    if (!req.body.token) {
-        return res.status(401).send('No token provided.');
-    }
-    const token = req.body.token;
-    const username = req.body.username;
-    const user = await db.getKey(username);
-    if (!user || user !== token) {
-        return res.status(401).send('Invalid token.');
-    }
+  //check token
+  if (!req.body.token) {
+    return res.status(401).send('No token provided.');
+  }
+  const token = req.body.token;
+  const username = req.body.username;
+  const user = await db.getKey(username);
+  if (!user || user !== token) {
+    return res.status(401).send('Invalid token.');
+  }
 
-    //get multiple files
-    //loop all files
-    _.forEach(_.keysIn(req.files.data), (key) => {
-        let pckgData = req.files.data[key];
-        
-        //move photo to uploads directory
-        pckgData.mv(`./public/uploads/${req.body.title}/` + pckgData.name);
-    });
+  //get multiple files
+  //loop all files
+  _.forEach(_.keysIn(req.files.data), (key) => {
+    let pckgData = req.files.data[key];
 
-    res.send('Package uploaded!');
+    //move photo to uploads directory
+    pckgData.mv(`./public/uploads/${req.body.title}/` + pckgData.name);
+  });
+
+  res.send('Package uploaded!');
 });
 
 app.get('/api/login', async (req, res) => {
-    //check if no files were uploaded
-    const username = req.body.username;
-    const password = req.body.password;
+  //check if no files were uploaded
+  const username = req.body.username;
+  const password = req.body.password;
 
-    if (!username || !password) {
-        return res.status(400).send('No username or password provided.');
-    }
+  if (!username || !password) {
+    return res.status(400).send('No username or password provided.');
+  }
 
-    //check if username exists
-    let user = await db.getKey(`${username}`);
-    if (!user) {
-        return res.status(404).send('Account does not exist.');
-    }
+  //check if username exists
+  let user = await db.getKey(`${username}`);
+  if (!user) {
+    return res.status(404).send('Account does not exist.');
+  }
 
-    //create token from username and password
-    let token = crypto.createHash('sha256').update(`${username},${password}`).digest('hex');
+  //create token from username and password
+  let token = crypto.createHash('sha256').update(`${username},${password}`).digest('hex');
 
-    //check if token matches
-    if (token !== user) {
-        return res.status(401).send('Invalid username or password.');
-    }
+  //check if token matches
+  if (token !== user) {
+    return res.status(401).send('Invalid username or password.');
+  }
 
-    //login successful
-    return res.send(user);
+  //login successful
+  return res.send(user);
 });
 
 app.post('/api/createAccount', async (req, res) => {
-    if (!req.body.username || !req.body.password) {
-        return res.status(400).send('No username or password provided.');
-    }
+  if (!req.body.username || !req.body.password) {
+    return res.status(400).send('No username or password provided.');
+  }
 
-    //merge username and password into one token
-    let token = crypto.createHash('sha256').update(`${req.body.username},${req.body.password}`).digest('hex');
+  //merge username and password into one token
+  let token = crypto.createHash('sha256').update(`${req.body.username},${req.body.password}`).digest('hex');
 
-    //set token in db
-    try {
-        db.setKey(req.body.username, token);
-    }
-    catch (err) {
-        res.status(400).send('Username already exists.');
-    }
+  //set token in db
+  try {
+    db.setKey(req.body.username, token);
+  }
+  catch (err) {
+    res.status(400).send('Username already exists.');
+  }
 
-    //create account successful
-    res.send('Account created!');
+  //create account successful
+  res.send('Account created!');
 });
 
 //get package info
 app.get('/api/getPackageInfo', async (req, res) => {
-    //check if no files were uploaded
-    if (!req.query.title) {
-        return res.status(400).send('No title provided.');
-    }
+  //check if no files were uploaded
+  if (!req.query.title) {
+    return res.status(400).send('No title provided.');
+  }
 
-    //get package info using fs in the uploads directory
-    let packageInfo;
-    try {
-        packageInfo = await fs.promises.readFile(`./public/uploads/${req.query.title}/pckg.json`, 'utf8');
-    }
-    catch (err) {
-        return res.status(404).send('Package not found');
-    }
+  //get package info using fs in the uploads directory
+  let packageInfo;
+  try {
+    packageInfo = await fs.promises.readFile(`./public/uploads/${req.query.title}/pckg.json`, 'utf8');
+  }
+  catch (err) {
+    return res.status(404).send('Package not found');
+  }
 
-    //parse package info
-    packageInfo = JSON.parse(packageInfo);
+  //parse package info
+  packageInfo = JSON.parse(packageInfo);
 
-    //send package info
-    res.send(packageInfo);
+  //send package info
+  res.send(packageInfo);
 });
 
 //search for packages given a search term
 app.get('/api/search', async (req, res) => {
-    //check if no files were uploaded
-    if (!req.query.searchTerm) {
-        return res.status(400).send('No search term provided.');
-    }
+  //check if no files were uploaded
+  if (!req.query.searchTerm) {
+    return res.status(400).send('No search term provided.');
+  }
 
-    //get all files in the uploads directory
-    let files;
-    try {
-        files = await fs.promises.readdir('./public/uploads/');
-    }
-    catch (err) {
-        return res.status(404).send('No packages found.');
-    }
+  //get all files in the uploads directory
+  let files;
+  try {
+    files = await fs.promises.readdir('./public/uploads/');
+  }
+  catch (err) {
+    return res.status(404).send('No packages found.');
+  }
 
-    //filter files by search term
-    let searchResults = _.filter(files, (file) => {
-        return file.includes(req.query.searchTerm);
-    }
-    );
+  //filter files by search term
+  let searchResults = _.filter(files, (file) => {
+    return file.includes(req.query.searchTerm);
+  }
+  );
 
-    //send search results
-    res.send(searchResults);
+  //send search results
+  res.send(searchResults);
 });
