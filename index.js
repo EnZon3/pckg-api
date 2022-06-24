@@ -167,3 +167,6 @@ app.get('/api/search', async (req, res) => {
     //send search results
     res.send(searchResults);
 });
+
+//vercel stuff
+module.export = app;
