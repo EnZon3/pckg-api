@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const _ = require('lodash');
 const db = require('@enzon3/txtdb');
+require('dotenv').config();
 
 //listen on port 8080
 app.listen(8080, () => {
