@@ -10,6 +10,12 @@ Clone the repository:
 git clone github.com/EnZon3/pckg-api
 ```
 
+Create a .env file with 2 settings:
+```
+mongodbUsr=<the username that you set up for your db>
+mongodbPwd=<the password that you set up for your db>
+```
+
 Run:
 ```bash 
 node .
