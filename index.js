@@ -46,6 +46,14 @@ app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/html/login.html');
 });
 
+app.get('/dashboard', (req, res) => {
+    res.sendFile(__dirname + '/public/html/dashboard.html');
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(__dirname + '/public/html/register.html');
+});
+
 //upload multiple files, each going to its own folder inside public/uploads
 app.post('/api/upload', async (req, res) => {
     //check if no files were uploaded
@@ -64,10 +72,23 @@ app.post('/api/upload', async (req, res) => {
         return res.status(401).send('Invalid token.');
     }
 
+    let pckgTitle = `${username}@${req.body.title}`;
+
     //check if output dir is empty
-    const files = fs.readdirSync(`./public/uploads/${username}`);
+    const files = fs.readdirSync(`./public/uploads/${pckgTitle}`);
     if (files.length > 0) {
         return res.status(401).send('Package already exists.');
+    }
+
+    //check if package name has been provided
+    if (!req.body.packageName) {
+        return res.status(400).send('No package name provided.');
+    }
+
+    //check if package name is valid
+    const packageName = req.body.packageName;
+    if (!packageName.match(/^[a-zA-Z0-9_]+$/)) {
+        return res.status(400).send('Invalid package name.');
     }
 
     //get multiple files
@@ -75,17 +96,17 @@ app.post('/api/upload', async (req, res) => {
     _.forEach(_.keysIn(req.files.data), (key) => {
         let pckgData = req.files.data[key];
         
-        //move photo to uploads directory
-        pckgData.mv(`./public/uploads/${req.body.title}/` + pckgData.name);
+        //move package to uploads directory
+        pckgData.mv(`./public/uploads/${pckgTitle}/` + pckgData.name);
     });
 
     //set package owner
-    fs.writeFileSync(`./public/uploads/${req.body.title}/PCKG_OWN.txt`, username);
+    fs.writeFileSync(`./public/uploads/${pckgTitle}/PCKG_OWN.txt`, username);
 
     res.send('Package uploaded!');
 });
 
-app.get('/api/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     //check if no files were uploaded
     const username = req.body.username;
     const password = req.body.password;
@@ -112,13 +133,18 @@ app.get('/api/login', async (req, res) => {
     return res.send(user);
 });
 
-app.post('/api/createAccount', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     if (!req.body.username || !req.body.password) {
         return res.status(400).send('No username or password provided.');
     }
 
     //merge username and password into one token
     let token = crypto.createHash('sha256').update(`${req.body.username},${req.body.password}`).digest('hex');
+
+    //check if username has blacklisted characters
+    if (/[^a-zA-Z0-9]/.test(req.body.username)) {
+        return res.status(400).send('Username contains invalid characters.');
+    }
 
     //set token in db
     try {
@@ -158,7 +184,7 @@ app.get('/api/getPackageInfo', async (req, res) => {
 //search for packages given a search term
 app.get('/api/search', async (req, res) => {
     //check if no files were uploaded
-    if (!req.query.searchTerm) {
+    if (!req.query.q) {
         return res.status(400).send('No search term provided.');
     }
 
@@ -173,7 +199,7 @@ app.get('/api/search', async (req, res) => {
 
     //filter files by search term
     let searchResults = _.filter(files, (file) => {
-        return file.includes(req.query.searchTerm);
+        return file.includes(req.query.q);
     }
     );
 
