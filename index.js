@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const _ = require('lodash');
 const db = require('@enzon3/txtdb');
-const fetch = require('node-fetch');
+const { default: fetch, Headers } = require("node-fetch-cjs");
 require('dotenv').config();
 
 //listen on port 8080
