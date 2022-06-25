@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const _ = require('lodash');
 const db = require('@enzon3/txtdb');
+const fetch = require('node-fetch');
 require('dotenv').config();
 
 //listen on port 8080
@@ -54,6 +55,28 @@ app.get('/register', (req, res) => {
     res.sendFile(__dirname + '/public/html/register.html');
 });
 
+app.post('/api/verifyCaptcha', async (req, res) => {
+    //get recaptcha response
+    var response = req.query.response;
+    //recaptcha site verification
+    fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RC_SECRET}&response=${response}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+    }).then(res => res.json())
+    .then(json => {
+        console.log(json);
+        //convert json to javascript object
+        var obj = JSON.parse(JSON.stringify(json));
+        if(obj.success == true){
+            res.send('true');
+        }
+        else {
+            res.send('false');
+        }
+    });
+});
 //upload multiple files, each going to its own folder inside public/uploads
 app.post('/api/upload', async (req, res) => {
     //check if no files were uploaded

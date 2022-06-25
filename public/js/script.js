@@ -77,17 +77,17 @@ $(document).ready(function(){
         let settings = {
             "async": true,
             "crossDomain": true,
-            "url": `https://www.google.com/recaptcha/api/siteverify?secret=6LfvIZ4gAAAAAJcgfIlppvoRksyBBHldcRB2m2XG&response=${response}`,
+            "url": `/api/verifyCaptcha?response=${response}`,
             "method": "POST",
             "headers": {}
           };
-          
-        $.ajax(settings).done(function (response) {
-            console.log(response);
-            let res = JSON.parse(response);
-            if(!res.success == 'true'){
+        var captRes;
+        $.ajax(settings).done(function (resp) {
+            console.log(resp);
+            if(resp != 'true'){
                 //show the error message
                 $('#rError').html('Please check the recaptcha.');
+                captRes = res;
                 return 1;
             }
             //ajax post call to register endpoint with the username and password in request body
@@ -105,11 +105,16 @@ $(document).ready(function(){
                 },
                 error: function(data){
                     //show the error message
-                    $('#rError').html(data.responseJSON.message);
+                    $('#rError').html(data);
                     return 1;
                 }
             });
         });
+
+        if(captRes != true){
+            //show the error message
+            return 1;
+        }
         //ajax post call to register endpoint with the username and password in request body
         const data = {
             username: username,
