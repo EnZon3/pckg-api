@@ -84,7 +84,8 @@ $(document).ready(function(){
           
         $.ajax(settings).done(function (response) {
             console.log(response);
-            if(response.success == 'false' || response == null){
+            let res = JSON.parse(response);
+            if(!res.success == 'true'){
                 //show the error message
                 $('#rError').html('Please check the recaptcha.');
                 return 1;
