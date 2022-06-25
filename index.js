@@ -79,6 +79,9 @@ app.post('/api/upload', async (req, res) => {
         pckgData.mv(`./public/uploads/${req.body.title}/` + pckgData.name);
     });
 
+    //set package owner
+    fs.writeFileSync(`./public/uploads/${req.body.title}/PCKG_OWN.txt`, username);
+
     res.send('Package uploaded!');
 });
 
