@@ -42,6 +42,10 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/html/index.html');
 });
 
+app.get('/login', (req, res) => {
+    res.sendFile(__dirname + '/public/html/login.html');
+});
+
 //upload multiple files, each going to its own folder inside public/uploads
 app.post('/api/upload', async (req, res) => {
     //check if no files were uploaded
@@ -58,6 +62,12 @@ app.post('/api/upload', async (req, res) => {
     const user = await db.getKey(username);
     if (!user || user !== token) {
         return res.status(401).send('Invalid token.');
+    }
+
+    //check if output dir is empty
+    const files = fs.readdirSync(`./public/uploads/${username}`);
+    if (files.length > 0) {
+        return res.status(401).send('Package already exists.');
     }
 
     //get multiple files

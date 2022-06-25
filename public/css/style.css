@@ -1,0 +1,31 @@
+.bg1 {
+    background-color: orange;
+}
+
+body {
+    background-color: #636363;
+}
+
+.nav-item {
+    color: white;
+}
+
+.orange-line {
+    background-color: orange;
+}
+
+#white-text {
+    color: white;
+}
+
+h1 {
+    color: #9c9c9c;
+
+    font-family: 'Roboto Mono', sans-serif;
+}
+
+h3 {
+    color: #9c9c9c;
+
+    font-family: 'Roboto Mono', sans-serif;
+}
