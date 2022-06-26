@@ -30,6 +30,12 @@ h3 {
     font-family: 'Roboto Mono', sans-serif;
 }
 
+h2 {
+    color: #9c9c9c;
+
+    font-family: 'Roboto Mono', sans-serif;
+}
+
 #lError {
     color: red;
     font-weight: bold;

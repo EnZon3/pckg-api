@@ -55,6 +55,10 @@ app.get('/register', (req, res) => {
     res.sendFile(__dirname + '/public/html/register.html');
 });
 
+app.get('/search', (req, res) => {
+    res.sendFile(__dirname + '/public/html/search.html');
+});
+
 async function verifyCaptcha(response) {
     //get recaptcha response
     //recaptcha site verification
