@@ -55,9 +55,8 @@ app.get('/register', (req, res) => {
     res.sendFile(__dirname + '/public/html/register.html');
 });
 
-app.post('/api/verifyCaptcha', async (req, res) => {
+async function verifyCaptcha(response) {
     //get recaptcha response
-    var response = req.query.response;
     //recaptcha site verification
     fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RC_SECRET}&response=${response}`, {
         method: 'POST',
@@ -70,13 +69,13 @@ app.post('/api/verifyCaptcha', async (req, res) => {
         //convert json to javascript object
         var obj = JSON.parse(JSON.stringify(json));
         if(obj.success == true){
-            res.send('true');
+            return true;
         }
         else {
-            res.send('false');
+            return false;
         }
     });
-});
+}
 //upload multiple files, each going to its own folder inside public/uploads
 app.post('/api/upload', async (req, res) => {
     //check if no files were uploaded
@@ -159,6 +158,11 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/register', async (req, res) => {
     if (!req.body.username || !req.body.password) {
         return res.status(400).send('No username or password provided.');
+    }
+
+    //verify captcha
+    if (!await verifyCaptcha(req.query.response)) {
+        return res.status(401).send('Captcha verification failed!');
     }
 
     //merge username and password into one token

@@ -73,30 +73,8 @@ $(document).ready(function(){
             $('#rError').html('Please check the recaptcha.');
             return 1;
         }
-        //recaptcha site verification
-        let settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": `/api/verifyCaptcha?response=${response}`,
-            "method": "POST",
-            "headers": {}
-          };
-        var captRes;
-        $.ajax(settings).done(function (resp) {
-            console.log(resp);
-            if(resp != 'true'){
-                //show the error message
-                $('#rError').html('Please check the recaptcha.');
-                captRes = res;
-                return 1;
-            }
-            //ajax post call to register endpoint with the username and password in request body
-            let data = {
-                username: username,
-                password: password
-            }
             $.ajax({
-                url: '/api/register',
+                url: `/api/register?response=${response}`,
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
@@ -105,11 +83,10 @@ $(document).ready(function(){
                 },
                 error: function(data){
                     //show the error message
-                    $('#rError').html(data);
+                    $('#rError').html(`<h4 id='rError'>${data}</h4>`);
                     return 1;
                 }
             });
-        });
 
         if(captRes != true){
             //show the error message
