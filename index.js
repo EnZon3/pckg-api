@@ -67,7 +67,7 @@ async function verifyCaptcha(response) {
     .then(json => {
         console.log(json);
         //convert json to javascript object
-        var obj = JSON.parse(JSON.stringify(json));
+        var obj = JSON.parse(json);
         if(obj.success == true){
             return true;
         }
