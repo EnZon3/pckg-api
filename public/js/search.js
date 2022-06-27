@@ -28,7 +28,7 @@ $(document).ready(function(){
                 $("#resultsHeader").append(q);
                 //loop through each result and append to #searchResults
                 for(var i = 0; i < data.length; i++){
-                    $('#searchResults').append(`<h3>${data[i]}</h3> <br>`);
+                    $('#searchResults').append(`<a href="/package?title=${data[i]}" class="display-4">${data[i]}</a> <br>`);
 
                 }
             }
