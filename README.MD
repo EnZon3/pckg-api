@@ -1,6 +1,6 @@
 # pckg
 
-![a](https://img.shields.io/tokei/lines/github/enzon3/pckg)
+![a](https://img.shields.io/tokei/lines/github/enzon3/pckg-api)
 
 pckg is a package manager for the language [SPWN](https://github.com/Spu7Nix/SPWN-language)
 
