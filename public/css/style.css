@@ -30,8 +30,39 @@ h3 {
     font-family: 'Roboto Mono', sans-serif;
 }
 
+h2 {
+    color: #9c9c9c;
+
+    font-family: 'Roboto Mono', sans-serif;
+}
+
 #lError {
     color: red;
     font-weight: bold;
     font-style: italic;
+}
+
+/* add grey padding to #pckg_readme and keep the background color as the same as the page */
+#pckg_readme {
+    background-color: #636363;
+    /* rounded corners */
+    border-radius: 10px;
+    border: 5px solid black;
+}
+
+/* make all hyperlinks solid blue */
+a {
+    color: blue;
+}
+
+/* make all code boxes a slightly darker grey with rounded corners */
+code {
+    background-color: #4b4b4b;
+    border-radius: 10px;
+    border: 5px solid #4b4b4b;
+    color: white;
+}
+
+pre {
+    color: white;
 }

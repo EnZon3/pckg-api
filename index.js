@@ -55,6 +55,14 @@ app.get('/register', (req, res) => {
     res.sendFile(__dirname + '/public/html/register.html');
 });
 
+app.get('/search', (req, res) => {
+    res.sendFile(__dirname + '/public/html/search.html');
+});
+
+app.get('/package', (req, res) => {
+    res.sendFile(__dirname + '/public/html/package.html');
+});
+
 async function verifyCaptcha(response) {
     //get recaptcha response
     //recaptcha site verification
@@ -206,6 +214,26 @@ app.get('/api/getPackageInfo', async (req, res) => {
 
     //send package info
     res.send(packageInfo);
+});
+
+//get package readme
+app.get('/api/getPackageReadme', async (req, res) => {
+    //check if no title was provided
+    if (!req.query.title) {
+        return res.status(400).send('No title provided.');
+    }
+
+    //get package readme using fs in the uploads directory
+    let packageReadme;
+    try {
+        packageReadme = await fs.promises.readFile(`./public/uploads/${req.query.title}/README.md`, 'utf8');
+    }
+    catch (err) {
+        return res.status(404).send('Package not found');
+    }
+
+    //send package readme
+    res.send(packageReadme);
 });
 
 //search for packages given a search term
